@@ -2,25 +2,36 @@ package dataStructure;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class DGraph implements graph
 {
-	public HashMap<Integer, node> nodesMap = new HashMap<Integer, node>();
-	public HashMap<Integer, HashMap<Integer,edge>> edgesMap = new HashMap<Integer, HashMap<Integer,edge>>();
+	public HashMap<Integer, node_data> nodesMap = new HashMap<Integer, node_data>();
+	public HashMap<Integer, HashMap<Integer,edge_data>> edgesMap = new HashMap<Integer, HashMap<Integer,edge_data>>();
 	public int edgesCounter=0;
 	public int mc_count=0;
 
 	public DGraph()
 	{
-		this.nodesMap = new HashMap<Integer, node>();
-		this.edgesMap = new HashMap<Integer, HashMap<Integer,edge>>();
+		this.nodesMap = new HashMap<Integer, node_data>();
+		this.edgesMap = new HashMap<Integer, HashMap<Integer,edge_data>>();
 		this.edgesCounter=0;
 		this.mc_count=0;
 	}
-	public DGraph(DGraph G)
+	public DGraph(graph G)
 	{
-		this.nodesMap=G.nodesMap;
-		this.edgesMap=G.edgesMap;
+		Collection<node_data> nodes= G.getV();
+		for (node_data b : nodes) {
+			node_data copynode= new node(b);
+			this.addNode(copynode);
+			Collection<edge_data> edegspernode= G.getE(b.getKey());
+			this.edgesMap.put(b.getKey(),new HashMap<Integer,edge_data>() );
+			for (edge_data c : edegspernode) {
+				edge_data copyedge= new edge(c) ;
+				this.edgesMap.get(b.getKey()).put(c.getDest(),copyedge);
+			}
+		}
+	
 		this.mc_count=G.mc_count;
 		this.edgesCounter=G.edgesCounter;
 
@@ -39,7 +50,7 @@ public class DGraph implements graph
 	{
 		if (this.edgesMap.get(src).get(dest) != null)
 		{
-			return  (edge_data)(this.edgesMap.get(src).get(dest)); 
+			return  (this.edgesMap.get(src).get(dest)); 
 		}
 		return null;
 	}
@@ -48,7 +59,7 @@ public class DGraph implements graph
 	public void addNode(node_data n) 
 	{
 		int key = 	n.getKey();
-		this.nodesMap.put(key, (node) n);
+		this.nodesMap.put(key, n);
 		this.mc_count++;
 	}
 
@@ -64,7 +75,7 @@ public class DGraph implements graph
 			edge newedge = new edge(src,dest,w);
 			if (this.edgesMap.get(src) == null) 
 			{
-				this.edgesMap.put(src, new HashMap<Integer,edge>());
+				this.edgesMap.put(src, new HashMap<Integer,edge_data>());
 				this.edgesMap.get(src).put(dest, newedge);
 				edgesCounter++;
 				this.mc_count++;
@@ -81,12 +92,12 @@ public class DGraph implements graph
 	@Override
 	public Collection<node_data> getV()
 	{
-		return (Collection<node_data>) this.nodesMap;
+		return this.nodesMap.values();
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		return (Collection<edge_data>)this.edgesMap.get(node_id); 
+		return this.edgesMap.get(node_id).values(); 
 	}
 
 	@Override
@@ -116,6 +127,7 @@ public class DGraph implements graph
 	@Override
 	public int getMC() {
 		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 

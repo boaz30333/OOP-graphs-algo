@@ -32,8 +32,8 @@ public class DGraph implements graph
 			}
 		}
 	
-		this.mc_count=G.mc_count;
-		this.edgesCounter=G.edgesCounter;
+		this.mc_count=G.getMC();
+		this.edgesCounter=G.edgeSize();
 
 	}
 

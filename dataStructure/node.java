@@ -30,7 +30,7 @@ public class node implements node_data
 	 * for details only
 	 * @param o
 	 */
-	protected node (node_data o) {
+	public node (node_data o) {
 		this.key=o.getKey();
 		this.tag=o.getTag();
 		this.weight=o.getWeight();

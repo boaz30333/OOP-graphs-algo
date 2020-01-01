@@ -24,7 +24,7 @@ public class DGraph implements graph
 		for (node_data b : nodes) {
 			node_data copynode= new node(b);
 			this.addNode(copynode);
-			Collection<edge_data> edegspernode= G.getE(b.getKey());
+			Collection<edge_data> edegspernode= G.getE(b.getKey()); // TODO 
 			this.edgesMap.put(b.getKey(),new HashMap<Integer,edge_data>() );
 			for (edge_data c : edegspernode) {
 				edge_data copyedge= new edge(c) ;
@@ -56,15 +56,17 @@ public class DGraph implements graph
 	}
 
 	@Override
-	public void addNode(node_data n) 
+	public void addNode(node_data n)  // TODO exsit same key
 	{
+		this.edgesMap.put(n.getKey(), new HashMap<Integer,edge_data>());
+
 		int key = 	n.getKey();
 		this.nodesMap.put(key, n);
 		this.mc_count++;
 	}
 
 	@Override
-	public void connect(int src, int dest, double w)
+	public void connect(int src, int dest, double w) //TODO already edge exist -> replace 
 	{
 		if (this.nodesMap.get(src)==null || this.nodesMap.get(dest)== null)
 		{
@@ -73,21 +75,13 @@ public class DGraph implements graph
 		else
 		{
 			edge newedge = new edge(src,dest,w);
-			if (this.edgesMap.get(src) == null) 
-			{
-				this.edgesMap.put(src, new HashMap<Integer,edge_data>());
-				this.edgesMap.get(src).put(dest, newedge);
-				edgesCounter++;
-				this.mc_count++;
-			}
-			else
-			{
+
 				this.edgesMap.get(src).put(dest, newedge);
 				edgesCounter++;
 				this.mc_count++;
 			}
 		}
-	}
+	
 
 	@Override
 	public Collection<node_data> getV()

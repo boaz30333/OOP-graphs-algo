@@ -12,7 +12,7 @@ public class node implements node_data
 
 	//Node Parameters:
 	private int key, tag;
-	private Point3D location;
+	private Point3D location=null;
 	private double weight;
 	private String info;
 		
@@ -37,7 +37,9 @@ public class node implements node_data
 		this.info=o.getInfo();
 		this.location=o.getLocation();
 	}
-
+	public node (int key) {
+		this.key=key;
+	}
 	public node (Point3D loc, double weight) {
 		this.key=keyMaker;
 		this.location=loc;
@@ -52,7 +54,9 @@ public class node implements node_data
 	public int getKey() { return this.key; }
 
 	@Override
-	public Point3D getLocation() { return new Point3D(this.location.x(),this.location.y(),this.location.z()); }
+	public Point3D getLocation() {
+		if (this.location==null) return null;
+		return new Point3D(this.location.x(),this.location.y(),this.location.z()); }
 
 	@Override
 	public void setLocation(Point3D p) { this.location = p; }
@@ -74,5 +78,12 @@ public class node implements node_data
 
 	@Override
 	public void setTag(int t) { this.tag = t; }
-
+	@Override
+	public String toString() {
+		String s= "	key="+this.key+" tag="+this.tag +"\r" + 
+				"\n location="+ this.location+
+				"\n weight=" + this.weight+
+				"\n	info="+this.info;
+		return s;
+	}
 }

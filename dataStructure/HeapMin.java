@@ -1,4 +1,7 @@
 package dataStructure;
+
+import java.util.HashMap;
+
 public class HeapMin {
 
 	double _positiveInfinity = Double.POSITIVE_INFINITY;
@@ -6,6 +9,7 @@ public class HeapMin {
 	private node _a[];
 	private int _size;
 	private int insert=0;
+	public HashMap<Integer, Integer> position = new HashMap<Integer, Integer>(); // key --> position in array
 	public HeapMin(node arr[]){
 		_size = arr.length;
 		_a = new node[_size];
@@ -13,11 +17,13 @@ public class HeapMin {
 			_a[i]=arr[i];
 		}
 	}
-	public HeapMin(){
-		_a = new node[0];
+	
+	public HeapMin(int size){
+		this._size=size;
+		_a = new node[size];
 	}
 	/** returns the heap size*/
-	public int getSize(){return _size;}
+	public int getSize(){return insert;}
 	/** returns the heap array */
 	public node[] getA(){ return _a;}
 	
@@ -33,7 +39,7 @@ public class HeapMin {
 	/** returns true if the heap is empty, otherwise false */
 	public boolean isEmpty(){
 		boolean ans = false;
-		if (_size == 0) ans = true;
+		if (insert == 0) ans = true;
 		return ans;
 	}
 	/** the minHeapfy function maintains the min-heap property */
@@ -62,27 +68,28 @@ public class HeapMin {
 		if (!isEmpty()){
 			v = _a[0];
 			min = v.getWeight();
-			_a[0]=_a[_size-1];
-			_size = _size-1;
-			minHeapify(0, _size);
+			_a[0]=_a[insert-1];
+			position.remove(v.getKey());
+			insert = insert-1;
+			minHeapify(0, insert);
 		}
 		return v;
 	}
 	/** the heapDecreaseKey implements the Decrease Key operation*/
 	public void heapDecreaseKey(node_data b){
 		int v = b.getKey();
-		int i = 0;
-		while (i<_size && v!=_a[i].getKey()) i++;
+		int i = position.get(v);
 			while (i>0 && _a[parent(i)].getWeight()>_a[i].getWeight()){
 				exchange(i, parent(i));
 				i = parent(i);
 			}
 		}
-	}
+
 	/** minHeapInsert function implements the Insert-Key operation*/
 	public void minHeapInsert(node_data b){
 		if(insert==_size) resize(_size);
-		_a[insert++] = new node(b);
+		_a[insert++] = (node)b;
+		position.put(b.getKey(),insert-1 );
 		heapDecreaseKey(b);
 	}
 	/** increment an array*/
@@ -99,6 +106,8 @@ public class HeapMin {
 		node t = _a[i];
 		_a[i] = _a[j];
 		_a[j] = t;
+		position.replace(_a[j].getKey(), j);
+		position.replace(_a[i].getKey(), i);
 	}
 /*	*//** print a heap array **//*
 	public void print(){
@@ -109,7 +118,7 @@ public class HeapMin {
 	}*/
 	public boolean contains(int key){
 		boolean ans = false;
-		for (int i=0; !ans && i<_size; i++){
+		for (int i=0; !ans && i<insert; i++){
 			if (_a[i].getKey() == key) ans = true;
 		}
 		return ans;

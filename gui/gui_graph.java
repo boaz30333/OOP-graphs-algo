@@ -11,8 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
+import java.util.List;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+
 import utils.Point3D;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +30,10 @@ import dataStructure.graph;
 import dataStructure.node_data;
 import dataStructure.DGraph;
 import dataStructure.edge_data;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class gui_graph extends JFrame implements ActionListener
 {
@@ -69,6 +75,8 @@ public class gui_graph extends JFrame implements ActionListener
 
 		MenuItem shortestPathDist = new MenuItem("shortest Path Dist");
 		shortestPathDist.addActionListener(this);
+		MenuItem shortestPathTrace = new MenuItem("shortest Path route");
+		shortestPathTrace.addActionListener(this);
 		
 		MenuItem connect = new MenuItem("connect");
 		connect.addActionListener(this);
@@ -79,6 +87,8 @@ public class gui_graph extends JFrame implements ActionListener
 		algo.add(Drawgraph);
 		algo.add(shortestPathDist);
 		algo.add(connect);
+		algo.add(shortestPathTrace);
+		
 	}
 
 
@@ -122,6 +132,9 @@ public class gui_graph extends JFrame implements ActionListener
 		case "Draw graph":
 			repaint();
 			break;
+		case "shortest Path route":
+			shortpath(this.getGraphics());
+			break;
 		case "shortest Path Dist":
 			JFrame in = new JFrame();
 			try 
@@ -131,6 +144,12 @@ public class gui_graph extends JFrame implements ActionListener
 
 				Graph_Algo a = new Graph_Algo();
 				a.init(this.g);
+				if(this.g.getNode(Integer.parseInt(source))==null||this.g.getNode(Integer.parseInt(dest))==null) 
+				{
+			    JOptionPane.showMessageDialog(in, "one or more frome vertex are givven not exist");
+			    break;
+
+				}
 				double ans = a.shortestPathDist(Integer.parseInt(source), Integer.parseInt(dest));
 				String out = Double.toString(ans);	
 				JOptionPane.showMessageDialog(in, "shortest Path Dist = " + out);
@@ -139,6 +158,10 @@ public class gui_graph extends JFrame implements ActionListener
 			{
 				e.printStackTrace();
 			}
+			break;
+		case "connect":
+			isConnected();
+			
 			break;
 		}
 	}
@@ -160,16 +183,18 @@ public class gui_graph extends JFrame implements ActionListener
 
 				
 				Collection<edge_data> edges = g.getE(node_data.getKey());
-				for (edge_data e : edges)
-				{	
-					d.setColor(Color.GREEN);
-					((Graphics2D) d).setStroke(new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
-					Point3D p2 = g.getNode(e.getDest()).getLocation();
-					d.drawLine(p.ix()+5, p.iy()+5, p2.ix()+5, p2.iy()+5);
-					d.setColor(Color.MAGENTA);
-					d.fillOval((int)((p.ix()*0.7)+(0.3*p2.ix()))+2, (int)((p.iy()*0.7)+(0.3*p2.iy())), 9, 9);
-					String sss = ""+String.valueOf(e.getWeight());
-					d.drawString(sss, 1+(int)((p.ix()*0.7)+(0.3*p2.ix())), (int)((p.iy()*0.7)+(0.3*p2.iy()))-2);
+				if(edges!=null) {
+					for (edge_data e : edges)
+					{	
+						d.setColor(Color.GREEN);
+						((Graphics2D) d).setStroke(new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+						Point3D p2 = g.getNode(e.getDest()).getLocation();
+						d.drawLine(p.ix()+5, p.iy()+5, p2.ix()+5, p2.iy()+5);
+						d.setColor(Color.MAGENTA);
+						d.fillOval((int)((p.ix()*0.2)+(0.8*p2.ix()))+2, (int)((p.iy()*0.2)+(0.8*p2.iy())), 9, 9);
+						String sss = ""+String.valueOf(e.getWeight());
+						d.drawString(sss, 1+(int)((p.ix()*0.2)+(0.8*p2.ix())), (int)((p.iy()*0.2)+(0.8*p2.iy()))-2);
+					}
 				}
 			}	
 		}
@@ -185,6 +210,60 @@ public class gui_graph extends JFrame implements ActionListener
 		}
 		else {
 			JOptionPane.showMessageDialog(in, "no connect");
+		}
+		
+	}
+	public void shortpath(Graphics d)
+	{
+		JFrame in = new JFrame();
+		try 
+		{
+			String source = JOptionPane.showInputDialog(in,"the key of source = ");
+			String dest = JOptionPane.showInputDialog(in,"the key of dest = ");
+
+			Graph_Algo a = new Graph_Algo();
+			a.init(this.g);
+			if(this.g.getNode(Integer.parseInt(source))==null||this.g.getNode(Integer.parseInt(dest))==null) 
+			{
+		    JOptionPane.showMessageDialog(in, "one or more frome vertex are givven not exist");
+
+			}
+			else {
+				((Graphics2D) d).setStroke(new BasicStroke(8,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+			List<node_data> b= a.shortestPath(Integer.parseInt(source), Integer.parseInt(dest));
+			Iterator<node_data> iter= b.iterator();
+			node_data first = iter.next();
+			System.out.println(first);
+
+			while(iter.hasNext())
+			{
+				Point3D p = first.getLocation();
+				d.setColor(Color.gray);
+				d.fillOval(p.ix(),p.iy(),16,16);
+
+				node_data second = iter.next();
+				System.out.println(second);
+
+				Point3D p2 = second.getLocation();
+				d.setColor(Color.ORANGE);
+				d.drawLine(p.ix()+5, p.iy()+5, p2.ix()+5, p2.iy()+5);
+				d.setColor(Color.BLACK);
+				d.setFont(new Font("Default", 2, 30) );
+				d.drawString(Integer.toString(first.getKey()), p.ix()-3, p.iy()-3);
+				d.setColor(Color.gray);
+				d.fillOval(p2.ix(),p2.iy(),16,16);
+				d.setColor(Color.BLACK);
+				d.drawString(Integer.toString(second.getKey()), p2.ix()-3, p2.iy()-3);
+
+				d.setColor(Color.MAGENTA);
+				d.fillOval((int)((p.ix()*0.2)+(0.8*p2.ix()))+2, (int)((p.iy()*0.2)+(0.8*p2.iy())), 12, 12);
+				String sss = ""+String.valueOf(this.g.getEdge(first.getKey(), second.getKey()).getWeight());
+				d.drawString(sss, 1+(int)((p.ix()*0.2)+(0.8*p2.ix())), (int)((p.iy()*0.2)+(0.8*p2.iy()))-2);
+				first=second;
+		} }}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 		
 	}

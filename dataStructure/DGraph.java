@@ -26,12 +26,14 @@ public class DGraph implements graph
 			this.addNode(copynode);
 			Collection<edge_data> edegspernode= G.getE(b.getKey());
 			this.edgesMap.put(b.getKey(),new HashMap<Integer,edge_data>() );
-			for (edge_data c : edegspernode) {
+			if(edegspernode != null)
+			{
+			for (edge_data c : edegspernode) {////////////////////////////////////
 				edge_data copyedge= new edge(c) ;
 				this.edgesMap.get(b.getKey()).put(c.getDest(),copyedge);
 			}
 		}
-	
+		}
 		this.mc_count=G.getMC();
 		this.edgesCounter=G.edgeSize();
 

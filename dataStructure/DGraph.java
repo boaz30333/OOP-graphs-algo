@@ -9,14 +9,16 @@ public class DGraph implements graph
 	public HashMap<Integer, node_data> nodesMap = new HashMap<Integer, node_data>();
 	public HashMap<Integer, HashMap<Integer,edge_data>> edgesMap = new HashMap<Integer, HashMap<Integer,edge_data>>();
 	public int edgesCounter=0;
-	public int mc_count=0;
+	public int nodeCounter=0;
+	public int MC = 0;
 
 	public DGraph()
 	{
 		this.nodesMap = new HashMap<Integer, node_data>();
 		this.edgesMap = new HashMap<Integer, HashMap<Integer,edge_data>>();
 		this.edgesCounter=0;
-		this.mc_count=0;
+		this.nodeCounter=0;
+		this.MC = 0;
 	}
 	public DGraph(graph G)
 	{
@@ -28,13 +30,13 @@ public class DGraph implements graph
 			this.edgesMap.put(b.getKey(),new HashMap<Integer,edge_data>() );
 			if(edegspernode != null)
 			{
-			for (edge_data c : edegspernode) {////////////////////////////////////
-				edge_data copyedge= new edge(c) ;
-				this.edgesMap.get(b.getKey()).put(c.getDest(),copyedge);
+				for (edge_data c : edegspernode) {////////////////////////////////////
+					edge_data copyedge= new edge(c) ;
+					this.edgesMap.get(b.getKey()).put(c.getDest(),copyedge);
+				}
 			}
 		}
-		}
-		this.mc_count=G.getMC();
+		this.MC = G.getMC();
 		this.edgesCounter=G.edgeSize();
 
 	}
@@ -62,7 +64,8 @@ public class DGraph implements graph
 	{
 		int key = 	n.getKey();
 		this.nodesMap.put(key, n);
-		this.mc_count++;
+		this.MC ++;
+		nodeCounter++;
 	}
 
 	@Override
@@ -80,13 +83,13 @@ public class DGraph implements graph
 				this.edgesMap.put(src, new HashMap<Integer,edge_data>());
 				this.edgesMap.get(src).put(dest, newedge);
 				edgesCounter++;
-				this.mc_count++;
+				this.MC ++;
 			}
 			else
 			{
 				this.edgesMap.get(src).put(dest, newedge);
 				edgesCounter++;
-				this.mc_count++;
+				this.MC ++;
 			}
 		}
 	}
@@ -105,34 +108,49 @@ public class DGraph implements graph
 	}
 
 	@Override
-	public node_data removeNode(int key) {
-		// TODO Auto-generated method stub
-		return null;
+	public node_data removeNode(int key)
+	{
+		if (this.nodesMap.containsKey(key))
+		{
+			node_data ans = this.nodesMap.remove(key);
+			int num = this.edgesMap.get(key).size();
+			this.edgesMap.remove(key);
+			this.nodeCounter = this.nodeCounter - num;
+			MC++;
+			return ans;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
-	public edge_data removeEdge(int src, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+	public edge_data removeEdge(int src, int dest)
+	{
+		if (this.edgesMap.get(src).get(dest)==null) 
+			return null; 
+		edge_data edge = new edge((edge)this.edgesMap.get(src).get(dest));
+		this.edgesMap.get(src).remove(dest);
+		edgesCounter--;
+		this.MC++;
+		return edge;
 	}
 
 	@Override
 	public int nodeSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.nodeCounter;
 	}
 
 	@Override
 	public int edgeSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return	edgesCounter;
 	}
 
 	@Override
-	public int getMC() {
-		// TODO Auto-generated method stub
-		
-		return 0;
+	public int getMC()
+	{
+		return MC;
 	}
 
 }

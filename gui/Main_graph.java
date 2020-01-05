@@ -1,5 +1,6 @@
 package gui;
 
+import algorithms.Graph_Algo;
 import dataStructure.DGraph;
 import dataStructure.graph;
 import dataStructure.node;
@@ -7,9 +8,10 @@ import utils.Point3D;
 
 public class Main_graph {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		graph g = new DGraph();
+		graph y= new DGraph();
 		Point3D p1 = new Point3D(500,600);
 		Point3D p2 = new Point3D(289,450);
 		Point3D p3 = new Point3D(200,400);
@@ -29,18 +31,24 @@ public class Main_graph {
 		g.addNode(n4);
 		g.addNode(n5);
 		g.addNode(n6);
+		
 
 		g.connect(n1.getKey(), n2.getKey(), 2);
 		g.connect(n2.getKey(), n1.getKey(), 10);
 		g.connect(n3.getKey(), n4.getKey(), 10);
+		gui_graph v = new gui_graph(g);
+		Thread.sleep(1000);
 		g.connect(n4.getKey(), n6.getKey(), 10);
 		g.connect(n5.getKey(), n3.getKey(), 10);
 		g.connect(n1.getKey(), n3.getKey(), 10);
 		g.connect(n5.getKey(), n1.getKey(), 10);
+//		Graph_Algo s= new Graph_Algo();
+//		s.init("C:\\Users\\User\\Documents\\123");
+//		System.out.println(s.shortestPathDist(1, 0));
+//		gui_graph a = new gui_graph(g);
+//		gui_graph b = new gui_graph(y);
+//		b.setVisible(true);
 		
-		
-		gui_graph a = new gui_graph(g);
-		a.setVisible(true);
 		  
 	}
 

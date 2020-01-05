@@ -1,9 +1,14 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class HeapMin {
+public class HeapMin implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	double _positiveInfinity = Double.POSITIVE_INFINITY;
 	final int INIT_SIZE = 10;
 	private node _a[];

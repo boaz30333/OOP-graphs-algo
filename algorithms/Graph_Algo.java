@@ -31,6 +31,10 @@ import dataStructure.node_data;
  */
 
 public class Graph_Algo implements graph_algorithms , Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	graph grph;
 	@Override
 	public void init(graph g) {
@@ -40,33 +44,10 @@ public class Graph_Algo implements graph_algorithms , Serializable{
 
 	@Override
 	public void init(String file_name) {
-        String filename = file_name; 
-        
         try
         {    
-            FileOutputStream file = new FileOutputStream(filename); 
-            ObjectOutputStream out = new ObjectOutputStream(file); 
-              
-            out.writeObject(grph); 
-              
-            out.close(); 
-            file.close(); 
-              
-            System.out.println("Object has been serialized"); 
-        }   
-        catch(IOException ex) 
-        { 
-            System.out.println("IOException is caught"); 
-        } 
-		
-	}
-
-	@Override
-	public void save(String file_name) {
-	       
-        try
-        {    
-            FileInputStream file = new FileInputStream("myObj.txt"); 
+        	System.out.println(file_name);
+            FileInputStream file = new FileInputStream(file_name); 
             ObjectInputStream in = new ObjectInputStream(file); 
               
             this.grph = (graph)in.readObject(); 
@@ -86,6 +67,34 @@ public class Graph_Algo implements graph_algorithms , Serializable{
         catch(ClassNotFoundException ex) 
         { 
             System.out.println("ClassNotFoundException is caught"); 
+        }
+		
+	}
+
+	@Override
+	public void save(String file_name) {
+	       
+
+        
+        
+        
+        String filename = file_name; 
+        
+        try
+        {    
+            FileOutputStream file = new FileOutputStream(filename); 
+            ObjectOutputStream out = new ObjectOutputStream(file); 
+              
+            out.writeObject(grph); 
+              
+            out.close(); 
+            file.close(); 
+              
+            System.out.println("Object has been serialized"); 
+        }   
+        catch(IOException ex) 
+        { 
+            System.out.println("IOException is caught"); 
         } 
 		
 	}
@@ -172,31 +181,33 @@ private void clearEdgeInfo(edge_data edge) {
 	public List<node_data> TSP(List<Integer> targets) {
 		clearInfo();
 //	TODO find with who to start and make hash of nodes in target(or copy list) than do diaxtra with first node find the minimum node wight and choose him for next until get all 
-		List<node_data> a= new ArrayList<node_data>();
-
+		List<node_data> a= new ArrayList<node_data>(); // the nodes in the TSP route
 
 
 		int key = 0;
-		int src=targets.get(0);
+		int src=targets.get(0);             // the first node is the first target
 		
-		a.add(this.grph.getNode(targets.remove(0)));
+		a.add(this.grph.getNode(targets.remove(0)));  // adding the first node target
+		
+		
 		while(!targets.isEmpty()) {
 			double weight=Integer.MAX_VALUE;
-		dijkstra(src);
-		Collection<node_data> nodes= this.grph.getV();
-		for (node_data b : nodes) {
-			if(b.getWeight()<weight&&targets.contains(b.getKey())) {
-				key=b.getKey();
-				weight=b.getWeight();
+			dijkstra(src);                      // do dijkstra algo from exist node target to find the route to the next target
+			Collection<node_data> nodes= this.grph.getV();
+			for (node_data b : nodes) {                 // find the closest next target from unvisited targets
+				if(b.getWeight()<weight&&targets.contains(b.getKey())) {
+					key=b.getKey();
+					weight=b.getWeight();
+				}
 			}
-		}
-		if(weight==Integer.MAX_VALUE) return null;
-		List<node_data> add_path=shortestPath(src, key);
-		add_path.remove(0);
-		a.addAll(add_path);
-		this.clearInfo();
-		src=key;
-		targets.remove(targets.indexOf(src));
+			if(weight==Integer.MAX_VALUE) return null;   // there no route to any next target ~ = the targets node not SCC 
+			
+			List<node_data> add_path=shortestPath(src, key); // find the path between exsit target to the next target
+			add_path.remove(0); // remove the first cause its adding in previous iteration
+			a.addAll(add_path); // adding the route to TSP path
+			this.clearInfo();  // clear info of algo running from the graph
+			src=key;      // the next src is the dest node key of this iteration
+			targets.remove(targets.indexOf(src)); //we are passed through 'src' target we can remove it from the list
 		}
 		
 		return a;

@@ -2,6 +2,7 @@ package dataStructure;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 public class DGraph implements graph
@@ -62,10 +63,14 @@ public class DGraph implements graph
 	@Override
 	public void addNode(node_data n) 
 	{
+
 		int key = 	n.getKey();
 		this.nodesMap.put(key, n);
 		this.MC ++;
 		nodeCounter++;
+		synchronized (this) {
+			this.notifyAll();
+		}
 	}
 
 	@Override
@@ -91,6 +96,9 @@ public class DGraph implements graph
 				edgesCounter++;
 				this.MC ++;
 			}
+			synchronized (this) {
+				this.notifyAll();
+			}
 		}
 	}
 
@@ -115,8 +123,19 @@ public class DGraph implements graph
 			node_data ans = this.nodesMap.remove(key);
 			int num = this.edgesMap.get(key).size();
 			this.edgesMap.remove(key);
-			this.nodeCounter = this.nodeCounter - num;
+			this.edgesCounter = this.edgesCounter - num; 
+			this.nodeCounter--;
+			Iterator<HashMap<Integer, edge_data>> d= this.edgesMap.values().iterator();
+			while(d.hasNext()) {
+				HashMap<Integer, edge_data> gg= d.next();
+				if(gg.containsKey(key))
+					gg.remove(key);
+			}
+			
 			MC++;
+			synchronized (this) {
+				this.notifyAll();
+			}
 			return ans;
 		}
 		else
@@ -134,6 +153,9 @@ public class DGraph implements graph
 		this.edgesMap.get(src).remove(dest);
 		edgesCounter--;
 		this.MC++;
+		synchronized (this) {
+			this.notifyAll();
+		}
 		return edge;
 	}
 

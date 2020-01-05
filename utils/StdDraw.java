@@ -104,6 +104,7 @@ import javax.swing.KeyStroke;
  *           StdDraw.line(0.2, 0.2, 0.8, 0.2);
  *       }
  *   }
+ *   
  *  </pre>
  *  If you compile and execute the program, you should see a window
  *  appear with a thick magenta line and a blue point.

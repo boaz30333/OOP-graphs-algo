@@ -1,12 +1,18 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import utils.Point3D;
 
-public class node implements node_data
+public class node implements node_data, Serializable
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static int keyMaker=0;
 

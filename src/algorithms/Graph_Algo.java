@@ -36,6 +36,14 @@ public class Graph_Algo implements graph_algorithms , Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	graph grph;
+	public Graph_Algo(graph _graph) {
+		this.grph= new DGraph(_graph);
+	}
+
+	public Graph_Algo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void init(graph g) {
 		// TODO Auto-generated method stub
@@ -46,7 +54,6 @@ public class Graph_Algo implements graph_algorithms , Serializable{
 	public void init(String file_name) {
         try
         {    
-        	System.out.println(file_name);
             FileInputStream file = new FileInputStream(file_name); 
             ObjectInputStream in = new ObjectInputStream(file); 
               
@@ -74,10 +81,6 @@ public class Graph_Algo implements graph_algorithms , Serializable{
 	@Override
 	public void save(String file_name) {
 	       
-
-        
-        
-        
         String filename = file_name; 
         
         try
@@ -85,7 +88,7 @@ public class Graph_Algo implements graph_algorithms , Serializable{
             FileOutputStream file = new FileOutputStream(filename); 
             ObjectOutputStream out = new ObjectOutputStream(file); 
               
-            out.writeObject(grph); 
+            out.writeObject(this.grph); 
               
             out.close(); 
             file.close(); 
@@ -256,47 +259,4 @@ private void clearEdgeInfo(edge_data edge) {
 		 next= NodeWeight.heapExtractMin();
 		}
     }
-    public static void main(String[] args) {
-    	DGraph g= new DGraph();
-    	g.addNode(new node(1));
-    	g.addNode(new node(2));
-    	g.addNode(new node(3));
-    	g.addNode(new node(4));
-
-    	g.connect(1, 4, 15);
-    	g.connect(4, 2, 12);
-    	g.connect(2, 3, 4);
-    	g.connect(3, 1, 9);
-    	g.connect(3, 2, 9);
-    	g.connect(4, 3, 15);
-    	
-
-
-
-
-    	Graph_Algo a = new Graph_Algo();
-    	a.init(g);
-    	ArrayList<Integer> bbb= new ArrayList<>();
-    	bbb.add(1);
-      	bbb.add(3);
-    	bbb.add(4);
-  
-    	
-    	List<node_data> c  =a.TSP(bbb);	
-    	Iterator<node_data> iter= c.iterator();
-    	while(iter.hasNext())
-    	System.out.println(iter.next());
-    }
-//System.out.println(a.isConnected());
-// c= a.shortestPath(1, 3);
-
-//Iterator<node_data> iter= c.iterator();
-//while(iter.hasNext())
-//System.out.println(iter.next());
-//		Collection<node_data> nodes= a.grph.getV();
-//		for (node_data b : nodes) {
-//    	System.out.println(b);
-//		}
-		
-    
 }

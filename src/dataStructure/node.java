@@ -13,9 +13,7 @@ public class node implements node_data, Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	public static int keyMaker=0;
-
 	//Node Parameters:
 	private int key, tag;
 	private Point3D location=null;
@@ -24,11 +22,9 @@ public class node implements node_data, Serializable
 		
 	//Constructors:
 	public node () {
-		this.key=keyMaker;
 		this.tag=0;
 		this.weight=0;
 		this.info="";
-		keyMaker++;
 	}
 	
 	
@@ -46,6 +42,19 @@ public class node implements node_data, Serializable
 	public node (int key) {
 		this.key=key;
 	}
+	public node (int key,Point3D loc, double weight) {
+		this.key=key;
+		this.location=loc;
+		this.tag=0;
+		this.weight=weight;
+		this.info="";
+	}
+	public node (int key,Point3D loc) {
+		this.key=key;
+		this.location=loc;
+		this.tag=0;
+		this.info="";
+	}
 	public node (Point3D loc, double weight) {
 		this.key=keyMaker;
 		this.location=loc;
@@ -54,6 +63,7 @@ public class node implements node_data, Serializable
 		this.info="";
 		keyMaker++;
 	}
+	
 
 	//Getters/Setters:
 	@Override

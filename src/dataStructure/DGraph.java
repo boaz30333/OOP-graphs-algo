@@ -1,12 +1,17 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
-public class DGraph implements graph
+public class DGraph implements graph , Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public HashMap<Integer, node_data> nodesMap = new HashMap<Integer, node_data>();
 	public HashMap<Integer, HashMap<Integer,edge_data>> edgesMap = new HashMap<Integer, HashMap<Integer,edge_data>>();
 	public int edgesCounter=0;

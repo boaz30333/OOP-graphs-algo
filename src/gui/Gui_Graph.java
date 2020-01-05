@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class gui_graph extends JFrame implements ActionListener ,Serializable
+public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 {
 	/**
 	 * 
@@ -44,12 +44,12 @@ public class gui_graph extends JFrame implements ActionListener ,Serializable
 	private static final long serialVersionUID = 1L;
 	protected graph g;
 	private static int if_change;
-	public gui_graph()
+	public Gui_Graph()
 	{
 		this.g = null;
 		init();
 	}
-	public gui_graph(graph n)
+	public Gui_Graph(graph n)
 	{
 		this.g = n;
 		init();
@@ -227,7 +227,7 @@ public class gui_graph extends JFrame implements ActionListener ,Serializable
 
 		public void run() {
 			while(true) {
-				if(gui_graph.if_change==g.getMC()) {
+				if(Gui_Graph.if_change==g.getMC()) {
 					try {
 						synchronized (g) {
 

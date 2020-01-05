@@ -5,95 +5,140 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import dataStructure.DGraph;
+import dataStructure.node;
+import utils.Point3D;
+
 class nodeTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
 
-	@Test
-	void testNode() {
-		fail("Not yet implemented"); // TODO
-	}
+
 
 	@Test
-	void testNodeNode_data() {
-		fail("Not yet implemented"); // TODO
-	}
+	void testGetKey()
+	{
+		Point3D p1 = new Point3D(15,8,2);
+		Point3D p2 = new Point3D(10,2,18);
 
-	@Test
-	void testNodeInt() {
-		fail("Not yet implemented"); // TODO
-	}
+		node n1 = new node(p1,1);
+		node n2 = new node(p2,2);
 
-	@Test
-	void testNodePoint3DDouble() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	void testGetKey() {
-		fail("Not yet implemented"); // TODO
+		assertNotEquals(n1.getKey(),n2.getKey());
 	}
 
 	@Test
 	void testGetLocation() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+
+		node n1 = new node(p1,1);
+
+		assertEquals(p1,n1.getLocation());
 	}
 
 	@Test
-	void testSetLocation() {
-		fail("Not yet implemented"); // TODO
+	void testSetLocation() 
+	{
+		Point3D p1 = new Point3D(15,8,2);
+		Point3D p2 = new Point3D(10,2,18);
+
+		node n1 = new node(p1,1);
+		node n2 = new node(p2,2);
+
+		n1.setLocation(p2);
+		n2.setLocation(p1);
+
+		assertEquals(p1,n2.getLocation());
+		assertEquals(p2,n1.getLocation());
 	}
 
 	@Test
 	void testGetWeight() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+		Point3D p2 = new Point3D(10,2,18);
+
+		node n1 = new node(p1,1);
+		node n2 = new node(p2,2);
+
+		n1.setWeight(180);
+		n2.setWeight(200);
+
+		assertEquals(200,n2.getWeight());
+		assertEquals(180,n1.getWeight());
 	}
 
 	@Test
 	void testSetWeight() {
-		fail("Not yet implemented"); // TODO
+		testGetWeight();
 	}
 
 	@Test
 	void testGetInfo() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+
+		node n1 = new node(p1,1);
+
+		n1.setInfo("ex2");
+
+		assertEquals("ex2",n1.getInfo());
 	}
 
 	@Test
 	void testSetInfo() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+
+		node n1 = new node(p1,1);
+
+		n1.setInfo("sunday");
+
+		assertEquals("sunday",n1.getInfo());
+
 	}
 
 	@Test
 	void testGetTag() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+
+		node n1 = new node(p1,1);
+
+		n1.setTag(200);
+
+		assertEquals(200,n1.getTag());
 	}
 
 	@Test
 	void testSetTag() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+
+		node n1 = new node(p1,1);
+
+		n1.setTag(100);
+
+		assertEquals(100,n1.getTag());
 	}
 
 	@Test
 	void testToString() {
-		fail("Not yet implemented"); // TODO
+		Point3D p1 = new Point3D(15,8,2);
+
+		node n1 = new node(p1,1);
+		int key = n1.getKey();
+		int tag = n1.getTag();
+		Point3D point = n1.getLocation();
+		double weight = n1.getWeight();
+		String info = n1.getInfo();
+		
+		
+		String s = "	key="+key+" tag="+tag +"\r" + 
+				"\n location="+point+
+				"\n weight=" +weight+
+				"\n	info="+info;
+		
+		assertEquals(s,n1.toString());
 	}
 
-	@Test
-	void testEquals() {
-		fail("Not yet implemented"); // TODO
-	}
 
-	@Test
-	void testClone() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	void testToString1() {
-		fail("Not yet implemented"); // TODO
-	}
 
 }

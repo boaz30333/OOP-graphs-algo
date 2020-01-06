@@ -6,11 +6,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
+/**
+ * @author dolev and boaz
+ *
+ */
+/**
+ * @author User
+ *
+ */
 public class DGraph implements graph , Serializable
 {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	public HashMap<Integer, node_data> nodesMap = new HashMap<Integer, node_data>();
 	public HashMap<Integer, HashMap<Integer,edge_data>> edgesMap = new HashMap<Integer, HashMap<Integer,edge_data>>();
@@ -18,6 +24,11 @@ public class DGraph implements graph , Serializable
 	public int nodeCounter=0;
 	public int MC = 0;
 
+	/**
+	 * default constructor
+	 * nodesMap = hashmap the key is the node key  and value is node_data type
+	 * edgesmap= hashmap the key is the key of source vertex and the value is hashmap(key is the destination vertex key and value is the edge between src and dest)
+	 */
 	public DGraph()
 	{
 		this.nodesMap = new HashMap<Integer, node_data>();
@@ -26,6 +37,12 @@ public class DGraph implements graph , Serializable
 		this.nodeCounter=0;
 		this.MC = 0;
 	}
+	
+	/**
+	 * @param G
+	 * constructor from another graph
+	 * DGraph is deep copy to G for vertex and edges
+	 */
 	public DGraph(graph G)
 	{
 		Collection<node_data> nodes= G.getV();
@@ -70,6 +87,9 @@ public class DGraph implements graph , Serializable
 	{
 
 		int key = 	n.getKey();
+		if(this.nodesMap.containsKey(n.getKey())) {  // if node with same key dexist plese replace it with th new one
+			this.nodesMap.remove(key);
+		}
 		this.nodesMap.put(key, n);
 		this.MC ++;
 		nodeCounter++;
@@ -83,17 +103,20 @@ public class DGraph implements graph , Serializable
 	{
 		if (this.nodesMap.get(src)==null || this.nodesMap.get(dest)== null)
 		{
-			System.out.println("eror");
+			System.out.println("eror - one or more from vertex input to connect non-exist");
 		}
 		else
 		{
-			edge newedge = new edge(src,dest,w);
+			edge_data newedge = new edge(src,dest,w);
 			if (this.edgesMap.get(src) == null) 
 			{
 				this.edgesMap.put(src, new HashMap<Integer,edge_data>());
 				this.edgesMap.get(src).put(dest, newedge);
 				edgesCounter++;
 				this.MC ++;
+			}
+			else if(this.edgesMap.get(src).containsKey(dest)) {  // if there is a edge between this given vertex we will replace it with the new one 
+				this.edgesMap.get(src).replace(src,this.edgesMap.get(src).get(dest),newedge);
 			}
 			else
 			{
@@ -125,8 +148,10 @@ public class DGraph implements graph , Serializable
 	{
 		if (this.nodesMap.containsKey(key))
 		{
+			int num =0;
 			node_data ans = this.nodesMap.remove(key);
-			int num = this.edgesMap.get(key).size();
+			if(this.edgesMap.containsKey(key))
+			num = this.edgesMap.get(key).size();
 			this.edgesMap.remove(key);
 			this.edgesCounter = this.edgesCounter - num; 
 			this.nodeCounter--;

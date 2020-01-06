@@ -44,6 +44,8 @@ public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 	private static final long serialVersionUID = 1L;
 	protected graph g;
 	private static int if_change;
+	int minx= Integer.MAX_VALUE;
+	int miny= Integer.MAX_VALUE;
 	public Gui_Graph()
 	{
 		this.g = null;
@@ -95,6 +97,19 @@ public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 		algo.add(connect);
 		algo.add(shortestPathTrace);
 		algo.add(TSP);
+		if(this.g!=null) {
+			Collection<node_data> b= this.g.getV()	;
+			Iterator<node_data> iter=b.iterator();
+
+			while(iter.hasNext()) {
+				node_data c = iter.next();
+				Point3D of_c= c.getLocation();
+				minx= Math.min(minx, of_c.ix());
+				miny= Math.min(miny, of_c.iy());
+			}
+if(minx<0) minx= Math.abs(minx);
+if(miny<80)miny= Math.abs(miny)+60;
+			}
 		
 	}
 
@@ -190,10 +205,10 @@ public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 			{
 				Point3D p = node_data.getLocation();
 				d.setColor(Color.gray);
-				d.fillOval(p.ix(),p.iy(),9,9);
+				d.fillOval((p.ix()+minx),(p.iy()+miny),9,9);
 
 				d.setColor(Color.RED);
-				d.drawString(Integer.toString(node_data.getKey()), p.ix()-3, p.iy()-3);
+				d.drawString(Integer.toString(node_data.getKey()), (p.ix()+minx)-3, (p.iy()+miny)-3);
 
 				
 				Collection<edge_data> edges = g.getE(node_data.getKey());
@@ -203,11 +218,11 @@ public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 						d.setColor(Color.GREEN);
 						((Graphics2D) d).setStroke(new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
 						Point3D p2 = g.getNode(e.getDest()).getLocation();
-						d.drawLine(p.ix()+5, p.iy()+5, p2.ix()+5, p2.iy()+5);
+						d.drawLine((p.ix()+minx)+5, (p.iy()+miny)+5, (p2.ix()+minx)+5, (p2.iy()+miny)+5);
 						d.setColor(Color.MAGENTA);
-						d.fillOval((int)((p.ix()*0.2)+(0.8*p2.ix()))+2, (int)((p.iy()*0.2)+(0.8*p2.iy())), 9, 9);
+						d.fillOval((int)(((p.ix()+minx)*0.2)+(0.8*(p2.ix()+minx)))+2, (int)(((p.iy()+miny)*0.2)+(0.8*(p2.iy()+miny))), 9, 9);
 						String sss = ""+String.valueOf(e.getWeight());
-						d.drawString(sss, 1+(int)((p.ix()*0.2)+(0.8*p2.ix())), (int)((p.iy()*0.2)+(0.8*p2.iy()))-2);
+						d.drawString(sss, 1+(int)(((p.ix()+minx)*0.2)+(0.8*(p2.ix()+minx))), (int)(((p.iy()+miny)*0.2)+(0.8*(p2.iy()+miny)))-2);
 					}
 				}
 			}	
@@ -286,26 +301,26 @@ public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 			{
 				Point3D p = first.getLocation();
 				d.setColor(Color.gray);
-				d.fillOval(p.ix(),p.iy(),16,16);
+				d.fillOval((p.ix()+minx),(p.iy()+miny),16,16);
 
 				node_data second = iter.next();
 				System.out.println(second);
 
 				Point3D p2 = second.getLocation();
 				d.setColor(Color.ORANGE);
-				d.drawLine(p.ix()+5, p.iy()+5, p2.ix()+5, p2.iy()+5);
+				d.drawLine((p.ix()+minx)+5, (p.iy()+miny)+5, (p2.ix()+minx)+5, (p2.iy()+miny)+5);
 				d.setColor(Color.BLACK);
 				d.setFont(new Font("Default", 2, 30) );
-				d.drawString(Integer.toString(first.getKey()), p.ix()-3, p.iy()-3);
+				d.drawString(Integer.toString(first.getKey()), (p.ix()+minx)-3, (p.iy()+miny)-3);
 				d.setColor(Color.gray);
-				d.fillOval(p2.ix(),p2.iy(),16,16);
+				d.fillOval((p2.ix()+minx),(p2.iy()+miny),16,16);
 				d.setColor(Color.BLACK);
-				d.drawString(Integer.toString(second.getKey()), p2.ix()-3, p2.iy()-3);
+				d.drawString(Integer.toString(second.getKey()), (p2.ix()+minx)-3, (p2.iy()+miny)-3);
 
 				d.setColor(Color.MAGENTA);
-				d.fillOval((int)((p.ix()*0.2)+(0.8*p2.ix()))+2, (int)((p.iy()*0.2)+(0.8*p2.iy())), 12, 12);
+				d.fillOval((int)(((p.ix()+minx)*0.2)+(0.8*(p2.ix()+minx)))+2, (int)(((p.iy()+miny)*0.2)+(0.8*(p2.iy()+miny))), 12, 12);
 				String sss = ""+String.valueOf(this.g.getEdge(first.getKey(), second.getKey()).getWeight());
-				d.drawString(sss, 1+(int)((p.ix()*0.2)+(0.8*p2.ix())), (int)((p.iy()*0.2)+(0.8*p2.iy()))-2);
+				d.drawString(sss, 1+(int)(((p.ix()+minx)*0.2)+(0.8*(p2.ix()+minx))), (int)(((p.iy()+miny)*0.2)+(0.8*(p2.iy()+miny)))-2);
 				first=second;
 		} }}
 		catch (Exception e)
@@ -346,26 +361,26 @@ public class Gui_Graph extends JFrame implements ActionListener ,Serializable
 		{
 			Point3D p = first.getLocation();
 			d.setColor(Color.gray);
-			d.fillOval(p.ix(),p.iy(),16,16);
+			d.fillOval((p.ix()+minx),(p.iy()+miny),16,16);
 
 			node_data second = iter.next();
 			System.out.println(second);
 
 			Point3D p2 = second.getLocation();
 			d.setColor(Color.ORANGE);
-			d.drawLine(p.ix()+5, p.iy()+5, p2.ix()+5, p2.iy()+5);
+			d.drawLine((p.ix()+minx)+5, (p.iy()+miny)+5, (p2.ix()+minx)+5, (p2.iy()+miny)+5);
 			d.setColor(Color.BLACK);
 			d.setFont(new Font("Default", 2, 30) );
-			d.drawString(Integer.toString(first.getKey()), p.ix()-3, p.iy()-3);
+			d.drawString(Integer.toString(first.getKey()), (p.ix()+minx)-3, (p.iy()+miny)-3);
 			d.setColor(Color.gray);
-			d.fillOval(p2.ix(),p2.iy(),16,16);
+			d.fillOval((p2.ix()+minx),(p2.iy()+miny),16,16);
 			d.setColor(Color.BLACK);
-			d.drawString(Integer.toString(second.getKey()), p2.ix()-3, p2.iy()-3);
+			d.drawString(Integer.toString(second.getKey()), (p2.ix()+minx)-3, (p2.iy()+miny)-3);
 
 			d.setColor(Color.MAGENTA);
-			d.fillOval((int)((p.ix()*0.2)+(0.8*p2.ix()))+2, (int)((p.iy()*0.2)+(0.8*p2.iy())), 12, 12);
+			d.fillOval((int)(((p.ix()+minx)*0.2)+(0.8*(p2.ix()+minx)))+2, (int)(((p.iy()+miny)*0.2)+(0.8*(p2.iy()+miny))), 12, 12);
 			String sss = ""+String.valueOf(this.g.getEdge(first.getKey(), second.getKey()).getWeight());
-			d.drawString(sss, 1+(int)((p.ix()*0.2)+(0.8*p2.ix())), (int)((p.iy()*0.2)+(0.8*p2.iy()))-2);
+			d.drawString(sss, 1+(int)(((p.ix()+minx)*0.2)+(0.8*(p2.ix()+minx))), (int)(((p.iy()+miny)*0.2)+(0.8*(p2.iy()+miny)))-2);
 			first=second;
 		}}
 		catch(Exception e) {

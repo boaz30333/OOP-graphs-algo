@@ -29,7 +29,7 @@ public class node implements node_data, Serializable
 	
 	
 	/**
-	 * for details only
+	 * deep copy constructor
 	 * @param o
 	 */
 	public node (node_data o) {

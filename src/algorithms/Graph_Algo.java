@@ -26,10 +26,11 @@ import dataStructure.node_data;
 /**
  * This empty class represents the set of graph-theory algorithms
  * which should be implemented as part of Ex2 - Do edit this class.
- * @author 
+
+/**
+ * @author boaz and dolev
  *
  */
-
 public class Graph_Algo implements graph_algorithms , Serializable{
 	/**
 	 * 
@@ -63,7 +64,6 @@ public class Graph_Algo implements graph_algorithms , Serializable{
             file.close(); 
               
             System.out.println("Object has been deserialized"); 
-            System.out.println(grph);
         } 
           
         catch(IOException ex) 
@@ -226,6 +226,12 @@ private void clearEdgeInfo(edge_data edge) {
 																													
 																																									
 
+    /**
+     * @param start The source vertex on which the algorithm works
+     * the function get src verex and doing dijkstra algo . meaning in the end of this function on each vertex v in the graph saved on its "weight" field- the destination  from "start"
+     * vertex and on its "tag" field the  previous vertex from it we reach to v
+     * if there isnt path between "start" and "v" - the field weight in "v" will be  infinity(max value of integer) and the field tag will be "-1"
+     */
     public void dijkstra(int start) {
         if (grph.getNode(start)==null) {
             System.err.printf("Graph doesn't contain start vertex \"%s\"\n", start);

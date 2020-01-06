@@ -17,6 +17,7 @@ import dataStructure.edge_data;
 import dataStructure.graph;
 import dataStructure.node;
 import dataStructure.node_data;
+import gui.Gui_Graph;
 import utils.Point3D;
 
 class DGraphTest {
@@ -27,9 +28,7 @@ class DGraphTest {
 
 	@Test
 	void testDGraph() {
-
-
-		assertTimeoutPreemptively(Duration.ofMillis(10000), () -> {
+		
 			// Simulate task that takes more than 10 ms.
 			graph d= new DGraph();
 			int i=1;
@@ -38,18 +37,10 @@ class DGraphTest {
 			}
 			for(i=0;i<1000;i++)  {
 				int j=0;
-				for(j=0;j<10000;j++) {
-					if(i!=j)
-						d.connect(i, i+j, 20);
+				for(j=10000;j<20000;j++) {
+						d.connect(i, j, 20);
 				}
 			}
-		});
-
-	}
-
-	@Test
-	void testDGraphGraph() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
@@ -84,8 +75,12 @@ class DGraphTest {
 		DGraph g = new DGraph();
 		node_data temp1 = new node(new Point3D(15,8,2),5);
 		node_data temp2 = new node(new Point3D(10,2,18),8);
+		node_data temp3 = new node(1,new Point3D(10,2,18));
+		node_data temp4 = new node(1,new Point3D(15,8,2));
 		g.addNode(temp1);
 		g.addNode(temp2);
+		g.addNode(temp3);
+		g.addNode(temp4);
 		assertEquals(g.getNode(temp1.getKey()), temp1);
 		assertEquals(g.getNode(temp2.getKey()), temp2);
 	}
@@ -165,6 +160,8 @@ class DGraphTest {
 	        g.removeNode(n1.getKey());
 	        g.removeNode(n2.getKey());
 	        g.removeNode(n3.getKey());
+	        
+	        
 	        assertEquals(null,g.getNode(n1.getKey()));
 	        assertEquals(null,g.getNode(n2.getKey()));
 	        assertEquals(null,g.getNode(n3.getKey()));
@@ -249,13 +246,25 @@ class DGraphTest {
 	}
 
 	@Test
-	void testEquals() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	void testToString() {
-		fail("Not yet implemented"); // TODO
+	void testToString() throws InterruptedException {
+		DGraph g = new DGraph();
+		Point3D p1 = new Point3D(100,100,2);
+		Point3D p2 = new Point3D(50,200,18);
+		Point3D p3 = new Point3D(150,200,2);
+		
+		node n1 = new node(p1,1);
+		node n2 = new node(p2,2);
+		node n3 = new node(p3,3);
+		
+		g.addNode(n1);
+		g.addNode(n2);
+		g.addNode(n3);
+		
+		  g.connect(n1.getKey(),n2.getKey(),100);
+		  g.connect(n2.getKey(),n3.getKey(),200);
+		  g.connect(n3.getKey(),n1.getKey(), 300);
+		Gui_Graph a = new Gui_Graph(g);
+Thread.sleep(10000);
 	}
 
 }

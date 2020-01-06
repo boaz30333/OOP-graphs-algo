@@ -60,7 +60,6 @@ class Graph_AlgoTest {
 		alg.save("try");
 		Graph_Algo ans = new Graph_Algo();
 		ans.init("try");
-		System.out.println(ans.shortestPathDist(1, 2));
 	}
 
 	@Test
@@ -73,7 +72,8 @@ class Graph_AlgoTest {
 			
 			node n1 = new node(p1,1);
 			node n2 = new node(p2,2);
-			
+			g.addNode(n1);
+			g.addNode(n2);
 	        g.connect(n1.getKey(),n2.getKey(),9);
 	        g.connect(n2.getKey(),n1.getKey(),2);
 	        alg.init(g);
@@ -114,11 +114,11 @@ class Graph_AlgoTest {
 		Point3D p4 = new Point3D(14,7,8);
 		
 		Point3D p0=new Point3D(20,15,0);
-		node n0 = new node(p0,0);				
-		node n1 = new node(p1,1);
-		node n2 = new node(p2,2);
-		node n3 = new node(p3,3);
-		node n4 = new node(p4,4);
+		node n0 = new node(0,p0);				
+		node n1 = new node(1,p1);
+		node n2 = new node(2,p2);
+		node n3 = new node(3,p3);
+		node n4 = new node(4,p4);
 		g.addNode(n0);
 		g.addNode(n1);
 		g.addNode(n2);

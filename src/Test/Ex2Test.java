@@ -57,6 +57,12 @@ import gui.*;
 	}
 	boolean drawGraph(graph g) { 
 		Gui_Graph b = new Gui_Graph(g);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return true;
 		
 	}

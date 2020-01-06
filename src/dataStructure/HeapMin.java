@@ -114,13 +114,7 @@ public class HeapMin implements Serializable {
 		position.replace(_a[j].getKey(), j);
 		position.replace(_a[i].getKey(), i);
 	}
-/*	*//** print a heap array **//*
-	public void print(){
-		for (int i=0; i<_size; i++){
-			System.out.print(_a[i]+"; ");
-		}
-		System.out.println();
-	}*/
+
 	public boolean contains(int key){
 		boolean ans = false;
 		for (int i=0; !ans && i<insert; i++){
@@ -128,32 +122,5 @@ public class HeapMin implements Serializable {
 		}
 		return ans;
 	}
-/*	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		node nodes1[] = {new node(16,0),
-						 new node(5,1),
-						 new node(8,2),
-						 new node(4,3),
-						 new node(2,4),
-						 new node(1,5)}; 
-		//int nodes1[] = {16,8,4,2,1}; 
-		//int nodes2[] = {5,13,2,25,7,17,2,8,4}; 
-		//int nodes3[] = {16,14,10,8,7,9,3,2,4,1}; 
-		HeapMin hp = new HeapMin(nodes1);
-		hp.buildMinHeap();
-		hp.print();
-		node node = new node(3,nodes1.length);
-		hp.minHeapInsert(node);
-		hp.print();
-		System.out.println("min = "+ hp.heapExtractMin());
-		hp.print();
-		System.out.println("min = "+ hp.heapExtractMin());
-		hp.print();
-/// heap sort
-		
-		HeapMin hps = new HeapMin(nodes1);
-		hps.heapSort();
-		hps.print();
-	}
-*/
+
 }

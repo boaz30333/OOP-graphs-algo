@@ -23,7 +23,7 @@ public class edge implements edge_data ,Serializable{
 	}
 	
 	/**
-	 * for details only
+	 * deep copy constructor
 	 * @param o
 	 */
 	protected edge(edge_data o) {

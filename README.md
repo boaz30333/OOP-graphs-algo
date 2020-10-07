@@ -1,4 +1,4 @@
-# The-Maze-of-Waze
+# Graphs-algo
 The project deals with intentional graphs.
 We built 5 departments:  node, edge, DGraph, Graph_Algo, gui_graph.
 node - A class that represents the vertices of the graph. And this class implements the interface node_data.
